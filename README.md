@@ -19,7 +19,7 @@ Options:
   -V, --version                  output the version number
   --base-timeout <milliseconds>  the base timeout of exponential backoff (default: "1000")
   --max-timeout <milliseconds>   the max timeout of exponential backoff (default: "Infinity")
-  --factor <concurrency>         factor (default: "2")
+  --factor <number>              factor (default: "2")
   --no-jitter                    use no-jitter exponential backoff
   -h, --help                     display help for command
 ```

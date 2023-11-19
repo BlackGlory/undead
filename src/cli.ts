@@ -28,7 +28,7 @@ program
   , 'the max timeout of exponential backoff'
   , 'Infinity'
   )
-  .option('--factor <concurrency>', 'factor', '2')
+  .option('--factor <number>', 'factor', '2')
   .option('--no-jitter', 'use no-jitter exponential backoff')
   .passThroughOptions() // 开启此选项以允许在没有`--`的情况下解析commands.
   .argument('<commands...>')
