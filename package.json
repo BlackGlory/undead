@@ -1,6 +1,6 @@
 {
   "name": "@blackglory/undead",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A program launcher that retries with exponential backoff when the exit code is non-zero.",
   "keywords": [],
   "files": [
