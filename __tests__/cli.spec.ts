@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { Bash } from 'extra-exec'
 import fs from 'fs/promises'
 
