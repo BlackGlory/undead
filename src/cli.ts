@@ -3,6 +3,7 @@ import { program } from 'commander'
 import { retryUntil, anyOf, exponentialBackoff } from 'extra-retry'
 import { version, description } from '@utils/package.js'
 import { spawn } from 'child_process'
+import { assert, isntNaN } from '@blackglory/prelude'
 
 interface IOptions {
   baseTimeout: string
@@ -72,17 +73,26 @@ program
   .parse()
 
 function getBaseTimeout(options: IOptions): number {
-  return Number.parseInt(options.baseTimeout, 10)
+  const result = Number.parseInt(options.baseTimeout, 10)
+  assert(isntNaN(result), 'The baseTimeout should be an integer')
+
+  return result
 }
 
 function getMaxTimeout(options: IOptions): number {
-  return isInfinity(options.maxTimeout)
-       ? Infinity
-       : Number.parseInt(options.maxTimeout, 10)
+  const result = isInfinity(options.maxTimeout)
+               ? Infinity
+               : Number.parseInt(options.maxTimeout, 10)
+  assert(isntNaN(result), 'The maxTimeout should be an integer')
+
+  return result
 }
 
 function getFactor(options: IOptions): number {
-  return Number.parseInt(options.factor, 10)
+  const result = Number.parseInt(options.factor, 10)
+  assert(isntNaN(result), 'The factor should be an integer')
+
+  return result
 }
 
 function getJitter(options: IOptions): boolean {
