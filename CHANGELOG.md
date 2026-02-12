@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/BlackGlory/undead/compare/v0.1.2...v0.2.0) (2026-02-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js v16 => Node.js v22
+
+### Features
+
+* **cli:** add assertions for arguments ([59de771](https://github.com/BlackGlory/undead/commit/59de77115a3bec995d55ac71d94ce333a1c95163))
+
+
+* upgrade dependencies ([647836a](https://github.com/BlackGlory/undead/commit/647836ab36f236664355cbce340c38fd62c13d44))
+
 ### [0.1.2](https://github.com/BlackGlory/undead/compare/v0.1.1...v0.1.2) (2023-11-19)
 
 ### [0.1.1](https://github.com/BlackGlory/undead/compare/v0.1.0...v0.1.1) (2023-01-28)
