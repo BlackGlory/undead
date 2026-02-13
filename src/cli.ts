@@ -3,7 +3,8 @@ import { program } from 'commander'
 import { retryUntil, anyOf, exponentialBackoff } from 'extra-retry'
 import { version, description } from '@utils/package.js'
 import { spawn } from 'child_process'
-import { assert, isntNaN } from '@blackglory/prelude'
+import { assert } from '@blackglory/prelude'
+import { AssertionError } from '@blackglory/errors'
 
 interface IOptions {
   baseTimeout: string
@@ -73,26 +74,33 @@ program
   .parse()
 
 function getBaseTimeout(options: IOptions): number {
-  const result = Number.parseInt(options.baseTimeout, 10)
-  assert(isntNaN(result), 'The baseTimeout should be an integer')
+  assert(
+    isIntegerString(options.baseTimeout)
+  , 'The parameter baseTimeout must be an integer'
+  )
 
-  return result
+  return Number.parseInt(options.baseTimeout, 10)
 }
 
 function getMaxTimeout(options: IOptions): number {
-  const result = isInfinity(options.maxTimeout)
-               ? Infinity
-               : Number.parseInt(options.maxTimeout, 10)
-  assert(isntNaN(result), 'The maxTimeout should be an integer')
-
-  return result
+  if (isInfinity(options.maxTimeout)) {
+    return Infinity
+  } else if (isIntegerString(options.maxTimeout)) {
+    return Number.parseInt(options.maxTimeout, 10)
+  } else {
+    throw new AssertionError(
+      'The parameter maxTimeout must be an integer or infinity'
+    )
+  }
 }
 
 function getFactor(options: IOptions): number {
-  const result = Number.parseInt(options.factor, 10)
-  assert(isntNaN(result), 'The factor should be an integer')
+  assert(
+    isIntegerString(options.factor)
+  , 'The parameter factor must be an integer'
+  )
 
-  return result
+  return Number.parseInt(options.factor, 10)
 }
 
 function getJitter(options: IOptions): boolean {
@@ -101,4 +109,8 @@ function getJitter(options: IOptions): boolean {
 
 function isInfinity(text: string): boolean {
   return /^\s*Infinity\s*$/i.test(text)
+}
+
+function isIntegerString(text: string): boolean {
+  return /^\d+$/.test(text)
 }
