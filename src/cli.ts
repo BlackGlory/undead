@@ -3,8 +3,7 @@ import { program } from 'commander'
 import { retryUntil, anyOf, exponentialBackoff } from 'extra-retry'
 import { version, description } from '@utils/package.js'
 import { spawn } from 'child_process'
-import { assert } from '@blackglory/prelude'
-import { AssertionError } from '@blackglory/errors'
+import { assert, isntNaN, isPositiveInfinity } from '@blackglory/prelude'
 
 interface IOptions {
   baseTimeout: string
@@ -74,43 +73,37 @@ program
   .parse()
 
 function getBaseTimeout(options: IOptions): number {
-  assert(
-    isIntegerString(options.baseTimeout)
-  , 'The parameter baseTimeout must be an integer'
-  )
+  const result = Number(options.baseTimeout)
+  assert(isntNaN(result), 'The parameter baseTimeout must be a number')
+  assert(Number.isFinite(result), 'The parameter baseTimeout must be finite')
+  assert(Number.isInteger(result), 'The parameter baseTimeout must be an integer')
+  assert(result > 0, 'The parameter baseTimeout must be greater than zero')
 
-  return Number.parseInt(options.baseTimeout, 10)
+  return result
 }
 
 function getMaxTimeout(options: IOptions): number {
-  if (isInfinity(options.maxTimeout)) {
-    return Infinity
-  } else if (isIntegerString(options.maxTimeout)) {
-    return Number.parseInt(options.maxTimeout, 10)
-  } else {
-    throw new AssertionError(
-      'The parameter maxTimeout must be an integer or infinity'
-    )
-  }
+  const result = Number(options.maxTimeout)
+  assert(isntNaN(result), 'The parameter maxTimeout must be a number')
+  assert(
+    Number.isInteger(result) ||
+    isPositiveInfinity(result)
+  , 'The parameter maxTimeout must be an integer or positive infinity'
+  )
+  assert(result > 0, 'The parameter maxTimeout must be greater than zero')
+
+  return result
 }
 
 function getFactor(options: IOptions): number {
-  assert(
-    isIntegerString(options.factor)
-  , 'The parameter factor must be an integer'
-  )
+  const result = Number(options.factor)
+  assert(isntNaN(result), 'The parameter factor must be a number')
+  assert(Number.isFinite(result), 'The parameter factor must be finite')
+  assert(result >= 1, 'The parameter factor must be greater than or equal to 1')
 
-  return Number.parseInt(options.factor, 10)
+  return result
 }
 
 function getJitter(options: IOptions): boolean {
   return options.jitter
-}
-
-function isInfinity(text: string): boolean {
-  return /^\s*Infinity\s*$/i.test(text)
-}
-
-function isIntegerString(text: string): boolean {
-  return /^\d+$/.test(text)
 }
